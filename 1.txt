@@ -1,3 +1,0 @@
-Hello,Good morning
-This is first test file.
-to check diff command
