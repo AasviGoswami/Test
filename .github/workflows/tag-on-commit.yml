@@ -1,6 +1,5 @@
 name: Automated Tagging
 
-# 👇 Add this to allow pushing tags
 permissions:
   contents: write
 
