@@ -1,3 +1,0 @@
-HELLO 
-This file contain
-Testing automated tagging
