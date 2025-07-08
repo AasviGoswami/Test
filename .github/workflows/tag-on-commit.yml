@@ -12,15 +12,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Git config
-      run: |
-        git config user.name "AasviGoswami"
-        git config user.email "aasvigoswami0911@gmail.com"
+      - name: Set up Git config
+        run: |
+          git config user.name "AasviGoswami"
+          git config user.email "aasvigoswami0911@gmail.com"
 
-    - name: Get current date and commit SHA
-      id: vars
-      run: |
-        echo "DATE=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
+      - name: Get current date and commit SHA
+        run: |
+          echo "DATE=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
+          echo "SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Create and push tag
+        env:
+          TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          TAG="auto-${DATE}-${SHA}"
+          echo "Creating tag: $TAG"
+          git tag "$TAG"
+          git remote set-url origin https://x-access-token:${TOKEN}@github.com/${{ github.repository }}
+          git push origin "$TAG"
