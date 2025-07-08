@@ -1,5 +1,9 @@
 name: Automated Tagging
 
+# 👇 Add this to allow pushing tags
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -19,14 +23,9 @@ jobs:
         run: |
           git config --local user.name "AasviGoswami"
           git config --local user.email "aasvigoswami0911@gmail.com"
-          
-          # Create tag
+
           git tag -a "v${{ github.run_number }}" -m "Release v${{ github.run_number }}"
-
-          # Set remote using token for authentication
           git remote set-url origin https://x-access-token:${TOKEN}@github.com/${{ github.repository }}
-
-          # Push the tag
           git push origin "v${{ github.run_number }}"
 
       - name: Create GitHub Release
