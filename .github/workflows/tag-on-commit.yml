@@ -24,9 +24,3 @@ jobs:
       id: vars
       run: |
         echo "DATE=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
-        echo "SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-
-    - name: Create tag
-      run: |
-        git tag "auto-${{ env.DATE }}-${{ env.SHA }}"
-        git push origin --tags
