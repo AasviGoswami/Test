@@ -1,0 +1,38 @@
+name: Automated Tagging
+
+# 👇 Add this to allow pushing tags
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Git config and create tag
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --local user.name "AasviGoswami"
+          git config --local user.email "aasvigoswami0911@gmail.com"
+
+          git tag -a "v${{ github.run_number }}" -m "Release v${{ github.run_number }}"
+          git remote set-url origin https://x-access-token:${TOKEN}@github.com/${{ github.repository }}
+          git push origin "v${{ github.run_number }}"
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: "v${{ github.run_number }}"
+          release_name: "Release v${{ github.run_number }}"
+          body: "Description of the changes in this release"
